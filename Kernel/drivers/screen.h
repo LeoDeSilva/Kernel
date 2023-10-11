@@ -12,3 +12,5 @@ int get_screen_offset(int row, int col);
 void print_char(char ch, int offset, char attr_byte);
 void print_string(char* str, int row, int col, char attr_byte);
 void clear_screen();
+void hide_cursor();
+void set_cursor_offset(int offset);
