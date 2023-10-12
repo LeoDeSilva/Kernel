@@ -1,3 +1,4 @@
+#include "../kernel/utils.h"
 #include "screen.h"
 #include "ports.h"
 
@@ -46,15 +47,33 @@ void print_char(char ch, int col, int row, char attr_byte) {
         offset = get_cursor_offset();
     }
 
+    if (offset >= MAX_ROWS * MAX_COLS * 2) {
+        // for each row, (starting at index 1) mem_copy to row above
+        // intialise empty last row & set cursor to beginning of last row
+        int i;
+        for (i = 1; i < MAX_ROWS; i++) {
+            mem_copy(
+                (char*)(VIDEO_ADDRESS + get_offset(0, i)), 
+                (char*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
+                MAX_COLS*2);
+        }
+
+        char* final_line = (char*)(VIDEO_ADDRESS + get_offset(0, MAX_ROWS-1));
+        for (i = 0; i < MAX_COLS*2; i++) final_line[i] = 0;
+
+        offset = get_offset(0, MAX_ROWS-1);
+    }
+
     if (ch == '\n') {
         int rows = offset / (2*MAX_ROWS);
-        offset = get_offset(79, rows);
+        offset = get_offset(0, rows+1);
     } else {
         vidmem[offset] = ch;
         vidmem[offset+1] = attr_byte;
+        offset += 2;
     }
 
-    offset += 2;
+
     set_cursor_offset(offset);
 }
 
