@@ -8,9 +8,16 @@
 #define REG_SCREEN_CTRL 0x3D4
 #define REG_SCREEN_DATA 0x3D5
 
-int get_screen_offset(int row, int col);
-void print_char(char ch, int offset, char attr_byte);
-void print_string(char* str, int row, int col, char attr_byte);
+void print_at(char* msg, int col, int row);
+void print(char* msg);
 void clear_screen();
-void hide_cursor();
+
+int get_screen_offset(int col, int row);
+int get_cursor_offset();
 void set_cursor_offset(int offset);
+void hide_cursor();
+
+void print_char(char ch, int col, int row, char attr_byte);
+int get_offset(int col, int row);
+int get_offset_row(int offset);
+int get_offset_col(int offset);

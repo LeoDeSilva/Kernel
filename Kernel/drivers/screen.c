@@ -1,9 +1,61 @@
 #include "screen.h"
 #include "../kernel/low_level.h"
 
-int get_screen_offset(int row, int col) {
-    int offset = (row * MAX_COLS + col) * 2;
-    return offset;
+// Public 
+void clear_screen() {
+    for (int row = 0; row < MAX_ROWS; row++) {
+        for (int col = 0; col < MAX_COLS; col++) {
+            int offset = get_offset(col, row);
+            print_char(' ', col, row, WHITE_ON_BLACK);
+        }
+    }
+
+    set_cursor_offset(0);
+}
+
+void print_at(char* msg, int col, int row) {
+    if (col >= 0 && row >= 0) {
+        set_cursor_offset(get_offset(col, row));
+    }
+
+    int i = 0;
+    while (msg[i]) {
+        print_char(msg[i++], col, row, WHITE_ON_BLACK);
+        int cursor_offset = get_cursor_offset();
+        row = get_offset_row(cursor_offset);
+        col = get_offset_col(cursor_offset);
+    }
+}
+
+void print(char* msg) {
+    print_at(msg, -1, -1);
+}
+
+// Private
+void print_char(char ch, int col, int row, char attr_byte) {
+    unsigned char *vidmem = (unsigned char*) VIDEO_ADDRESS;
+
+    if (!attr_byte) {
+        attr_byte = WHITE_ON_BLACK;
+    }
+
+    int offset;
+    if (col >=0 && row >= 0) {
+        offset = get_offset(col, row);
+    } else {
+        offset = get_cursor_offset();
+    }
+
+    if (ch == '\n') {
+        int rows = offset / (2*MAX_ROWS);
+        offset = get_offset(79, rows);
+    } else {
+        vidmem[offset] = ch;
+        vidmem[offset+1] = attr_byte;
+    }
+
+    offset += 2;
+    set_cursor_offset(offset);
 }
 
 int get_cursor_offset() {
@@ -28,27 +80,6 @@ void hide_cursor() {
     port_byte_out(REG_SCREEN_DATA, 0x20);
 }
 
-void print_char(char ch, int offset, char attr_byte) {
-    char* VIDEO_MEMORY = (char*)0xb8000;
-    *(VIDEO_MEMORY + offset) = ch;
-}
-
-void print_string(char* str, int row, int col, char attr_byte) {
-    int offset = get_screen_offset(row, col);
-
-    int i = 0;
-    while (str[i] != 0) {
-        print_char(str[i], offset, attr_byte);
-        offset += 2;
-        i++;
-    }
-}
-
-void clear_screen() {
-    for (int row = 0; row < MAX_ROWS; row++) {
-        for (int col = 0; col < MAX_COLS; col++) {
-            int offset = get_screen_offset(row, col);
-            print_char(' ', offset, WHITE_ON_BLACK);
-        }
-    }
-}
+int get_offset(int col, int row) { return 2 * (row * MAX_COLS + col); }
+int get_offset_row(int offset) { return offset / (2 * MAX_COLS); }
+int get_offset_col(int offset) { return (offset - (get_offset_row(offset)*2*MAX_COLS))/2; }
