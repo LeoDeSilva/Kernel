@@ -11,6 +11,7 @@
 void print_at(char* msg, int col, int row);
 void print(char* msg);
 void clear_screen();
+int handle_scrolling(int offset);
 
 int get_screen_offset(int col, int row);
 int get_cursor_offset();

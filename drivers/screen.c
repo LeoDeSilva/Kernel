@@ -42,11 +42,25 @@ void print_char(char ch, int col, int row, char attr_byte) {
 
     int offset;
     if (col >=0 && row >= 0) {
-        offset = get_offset(col, row);
+        offset = handle_scrolling(get_offset(col, row));
     } else {
-        offset = get_cursor_offset();
+        offset = handle_scrolling(get_cursor_offset());
     }
 
+    if (ch == '\n') {
+        int rows = get_offset_row(offset);
+        offset = get_offset(0, rows+1);
+    } else {
+        vidmem[offset] = ch;
+        vidmem[offset+1] = attr_byte;
+        offset += 2;
+    }
+
+    offset = handle_scrolling(offset);
+    set_cursor_offset(offset);
+}
+
+int handle_scrolling(int offset) {
     if (offset >= MAX_ROWS * MAX_COLS * 2) {
         // for each row, (starting at index 1) mem_copy to row above
         // intialise empty last row & set cursor to beginning of last row
@@ -64,17 +78,7 @@ void print_char(char ch, int col, int row, char attr_byte) {
         offset = get_offset(0, MAX_ROWS-1);
     }
 
-    if (ch == '\n') {
-        int rows = offset / (2*MAX_ROWS);
-        offset = get_offset(0, rows+1);
-    } else {
-        vidmem[offset] = ch;
-        vidmem[offset+1] = attr_byte;
-        offset += 2;
-    }
-
-
-    set_cursor_offset(offset);
+    return offset;
 }
 
 int get_cursor_offset() {
