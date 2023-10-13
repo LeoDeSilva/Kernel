@@ -1,13 +1,13 @@
 #include "../drivers/screen.h"
 
-void mem_copy(char *source, char *dest, int nbytes) {
+void memcpy(char *source, char *dest, int nbytes) {
     int i;
     for (i = 0; i < nbytes; i++) {
         *(dest + i) = *(source + i);
     }
 }
 
-char* int_to_ascii(int n) {
+char* iota(int n) {
     int i = 0;
     char* str = 0;
 

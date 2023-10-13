@@ -61,12 +61,12 @@ void print_char(char ch, int col, int row, char attr_byte) {
 }
 
 int handle_scrolling(int offset) {
-    if (offset >= MAX_ROWS * MAX_COLS * 2) {
-        // for each row, (starting at index 1) mem_copy to row above
+   while (offset >= MAX_ROWS * MAX_COLS * 2) {
+        // for each row, (starting at index 1) memcpy to row above
         // intialise empty last row & set cursor to beginning of last row
         int i;
         for (i = 1; i < MAX_ROWS; i++) {
-            mem_copy(
+            memcpy(
                 (char*)(VIDEO_ADDRESS + get_offset(0, i)), 
                 (char*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
                 MAX_COLS*2);
