@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/ldesilva/Documents/Personal/Coding/NEA_Concepts/OSFromScratch/Kernel/drivers",
-      "program": "/Users/ldesilva/Documents/Personal/Coding/NEA_Concepts/OSFromScratch/Kernel/drivers/build/Debug/outDebug"
+      "cwd": "/Users/ldesilva/Documents/Personal/Coding/NEA_Concepts/OSFromScratch/Kernel/kernel",
+      "program": "/Users/ldesilva/Documents/Personal/Coding/NEA_Concepts/OSFromScratch/Kernel/kernel/build/Debug/outDebug"
     }
   ]
 }

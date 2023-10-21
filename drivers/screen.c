@@ -3,11 +3,11 @@
 #include "ports.h"
 
 // Public 
-void clear_screen() {
+void clear_screen(u8 colour) {
     for (int row = 0; row < MAX_ROWS; row++) {
         for (int col = 0; col < MAX_COLS; col++) {
             int offset = get_offset(col, row);
-            print_char(' ', col, row, WHITE_ON_BLACK);
+            print_char(' ', col, row, colour);
         }
     }
 

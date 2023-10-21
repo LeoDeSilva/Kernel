@@ -1,3 +1,5 @@
+#include "../cpu/types.h"
+
 #define VIDEO_ADDRESS 0xb8000
 #define MAX_ROWS 25
 #define MAX_COLS 80
@@ -10,7 +12,7 @@
 
 void print_at(char* msg, int col, int row);
 void print(char* msg);
-void clear_screen();
+void clear_screen(u8 colour);
 int handle_scrolling(int offset);
 
 int get_screen_offset(int col, int row);

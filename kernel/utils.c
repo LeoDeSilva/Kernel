@@ -1,10 +1,18 @@
 #include "../drivers/screen.h"
+#include "utils.h"
 
 void memcpy(char *source, char *dest, int nbytes) {
     int i;
     for (i = 0; i < nbytes; i++) {
         *(dest + i) = *(source + i);
     }
+}
+
+u32 strlen(char *s) {
+    int i = 0;
+    while (s[i])
+        i++;
+    return i;
 }
 
 char* iota(int n) {

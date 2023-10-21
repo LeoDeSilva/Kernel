@@ -2,12 +2,7 @@
 #include "utils.h"
 
 void main() {
-    //TODO: scrolling behaviour
-    clear_screen();
-    // for (int row = 0; row < MAX_ROWS; row++) {
-    //     print_at(int_to_ascii(row), 0, row);
-    // }
-
+    clear_screen(WHITE_ON_BLACK);
     print_at("10 X = \"Hello World\"", 0, 0);
     print_at("20 PRINT X", 0, 1);
     print_at("30 GOTO 10", 0, 2);
