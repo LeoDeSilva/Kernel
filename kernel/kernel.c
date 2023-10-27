@@ -2,11 +2,13 @@
 #include "utils.h"
 #include "../cpu/isr.h"
 #include "../cpu/idt.h"
+#include "../cpu/timer.h"
 
 void main() {
     isr_install();
-    __asm__ __volatile__("int $0"); 
-    __asm__ __volatile__("int $3"); 
+    asm volatile("sti");
+    init_timer(50);
+
     // clear_screen(WHITE_ON_BLACK);
     // print_at("10 X = \"Hello World\"", 0, 0);
     // print_at("20 PRINT X", 0, 1);
