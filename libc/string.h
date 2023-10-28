@@ -1,9 +1,9 @@
 #ifndef STRINGS_H
 #define STRINGS_H
 
-#include "../cpu/types.h"
+#include <stdint.h>
 
 char* iota(int n);
-u32 strlen(char *s);
+uint32_t strlen(char *s);
 
 #endif

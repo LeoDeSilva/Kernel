@@ -60,6 +60,10 @@
     "screen.h": "c",
     "timer.h": "c",
     "string.h": "c",
-    "idt.h": "c"
+    "idt.h": "c",
+    "ports.h": "c",
+    "keyboard.h": "c",
+    "stdint.h": "c",
+    "function.h": "c"
   }
 }

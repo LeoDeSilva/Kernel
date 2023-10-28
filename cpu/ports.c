@@ -1,6 +1,6 @@
 #include "ports.h"
 
-unsigned char port_byte_in(u16 port) {
+unsigned char port_byte_in(uint16_t port) {
     // Reads a byte from the specified port
     // =a (result) : put AL register in var RESULT once finished
     // d (port) : load EDX with port
@@ -9,18 +9,18 @@ unsigned char port_byte_in(u16 port) {
     return result;
 } 
 
-void port_byte_out(u16 port, u8 data) {
+void port_byte_out(uint16_t port, uint8_t data) {
     // "a" (data) : load EAX with data
     // "d" (port) : load EDX with port
     __asm__("out %%al, %%dx" : :"a" (data), "d" (port));
 }
 
-unsigned short port_word_in(u16 port) {
+unsigned short port_word_in(uint16_t port) {
     unsigned short result;
     __asm__("in %%dx, %%ax" : "=a" (result) : "d" (port));
     return result;
 }
 
-void port_word_out(u16 port, u16 data) {
+void port_word_out(uint16_t port, uint16_t data) {
     __asm__("out %%ax, %%dx" : :"a" (data), "d" (port));
 }

@@ -1,6 +1,6 @@
 #include "string.h"
 
-u32 strlen(char *s) {
+uint32_t strlen(char *s) {
     int i = 0;
     while (s[i])
         i++;

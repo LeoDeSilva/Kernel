@@ -2,7 +2,7 @@
 #include "screen.h"
 #include "../cpu/ports.h"
 
-void clear_screen(u8 colour);
+void clear_screen(uint8_t colour);
 int handle_scrolling(int offset);
 
 int get_screen_offset(int col, int row);
@@ -16,7 +16,7 @@ int get_offset_row(int offset);
 int get_offset_col(int offset);
 
 // Public 
-void clear_screen(u8 colour) {
+void clear_screen(uint8_t colour) {
     for (int row = 0; row < MAX_ROWS; row++) {
         for (int col = 0; col < MAX_COLS; col++) {
             print_char(' ', col, row, colour);
@@ -83,8 +83,8 @@ int handle_scrolling(int offset) {
         int i;
         for (i = 1; i < MAX_ROWS; i++) {
             memcpy(
-                (u8*)(VIDEO_ADDRESS + get_offset(0, i)), 
-                (u8*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
+                (uint8_t*)(VIDEO_ADDRESS + get_offset(0, i)), 
+                (uint8_t*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
                 MAX_COLS*2);
         }
 

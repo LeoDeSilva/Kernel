@@ -1,8 +1,8 @@
 #ifndef MEM_H
 #define MEM_H
 
-#include "../cpu/types.h"
+#include <stdint.h>
 
-void memcpy(u8 *source, u8 *dest, int nbytes);
+void memcpy(uint8_t *source, uint8_t *dest, int nbytes);
 
 #endif
