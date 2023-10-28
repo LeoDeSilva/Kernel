@@ -4,6 +4,8 @@
 #include "screen.h"
 #include "../libc/string.h"
 
+void print_letter(u8 scancode);
+
 static void keyboard_callback(registers_t regs) {
     // The PIC leaves the scan code in porty byte 0x60
     u8 scancode = port_byte_in(0x60);

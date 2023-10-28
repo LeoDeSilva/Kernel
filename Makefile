@@ -26,7 +26,7 @@ kernel/kernel.bin : boot/kernel_entry.o ${OBJ}
 
 clean: 
 	rm -fr *.bin *.o *.dis os-image *.map 
-	rm -fr kernel/*.o boot/*.bin drivers/*.o kernel/*.dis kernel/*.bin
+	rm -fr kernel/*.o boot/*.bin drivers/*.o kernel/*.dis kernel/*.bin cpu/*.o libc/*.o
 
 kernel/kernel.dis: kernel/kernel.bin
 	ndisasm -b 32 $> > $@
