@@ -2,6 +2,7 @@
 #include "ports.h"
 #include "../cpu/isr.h"
 #include "screen.h"
+#include "../libc/string.h"
 
 static void keyboard_callback(registers_t regs) {
     // The PIC leaves the scan code in porty byte 0x60
