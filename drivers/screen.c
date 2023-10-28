@@ -1,12 +1,24 @@
 #include "../libc/mem.h"
 #include "screen.h"
-#include "ports.h"
+#include "../cpu/ports.h"
+
+void clear_screen(u8 colour);
+int handle_scrolling(int offset);
+
+int get_screen_offset(int col, int row);
+int get_cursor_offset();
+void set_cursor_offset(int offset);
+void hide_cursor();
+
+void print_char(char ch, int col, int row, char attr_byte);
+int get_offset(int col, int row);
+int get_offset_row(int offset);
+int get_offset_col(int offset);
 
 // Public 
 void clear_screen(u8 colour) {
     for (int row = 0; row < MAX_ROWS; row++) {
         for (int col = 0; col < MAX_COLS; col++) {
-            int offset = get_offset(col, row);
             print_char(' ', col, row, colour);
         }
     }
@@ -14,7 +26,7 @@ void clear_screen(u8 colour) {
     set_cursor_offset(0);
 }
 
-void print_at(char* msg, int col, int row) {
+void kprint_at(char* msg, int col, int row) {
     if (col >= 0 && row >= 0) {
         set_cursor_offset(get_offset(col, row));
     }
@@ -28,8 +40,12 @@ void print_at(char* msg, int col, int row) {
     }
 }
 
-void print(char* msg) {
-    print_at(msg, -1, -1);
+void kprint(char* msg) {
+    kprint_at(msg, -1, -1);
+}
+
+void kprint_letter(char ch) {
+    kprint(&ch);
 }
 
 // Private
@@ -67,8 +83,8 @@ int handle_scrolling(int offset) {
         int i;
         for (i = 1; i < MAX_ROWS; i++) {
             memcpy(
-                (char*)(VIDEO_ADDRESS + get_offset(0, i)), 
-                (char*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
+                (u8*)(VIDEO_ADDRESS + get_offset(0, i)), 
+                (u8*)(VIDEO_ADDRESS + get_offset(0, i-1)), 
                 MAX_COLS*2);
         }
 

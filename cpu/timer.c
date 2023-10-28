@@ -1,5 +1,6 @@
 #include "../drivers/screen.h"
-#include "../drivers/ports.h"
+#include "../libc/function.h"
+#include "../cpu/ports.h"
 #include "timer.h"
 #include "isr.h"
 
@@ -7,6 +8,7 @@ u32 tick = 0;
 
 static void timer_callback(registers_t regs) {
     tick++;
+    UNUSED(regs);
 }
 
 void init_timer(u32 freq) {

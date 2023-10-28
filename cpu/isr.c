@@ -1,8 +1,11 @@
 #include "isr.h"
 #include "idt.h"
 #include "../drivers/screen.h"
-#include "../drivers/ports.h"
+#include "../cpu/ports.h"
 #include "../libc/string.h"
+
+#include "../drivers/keyboard.h"
+#include "timer.h"
 
 isr_t interrupt_handlers[256];
 
@@ -115,11 +118,11 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-    print("received interrupt: ");
-    print(iota(r.int_no));
-    print("\n");
-    print(exception_messages[r.int_no]);
-    print("\n");
+    kprint("received interrupt: ");
+    kprint(iota(r.int_no));
+    kprint("\n");
+    kprint(exception_messages[r.int_no]);
+    kprint("\n");
 }
 
 void register_interrupt_handler(u8 n, isr_t handler) {
@@ -127,8 +130,7 @@ void register_interrupt_handler(u8 n, isr_t handler) {
 }
 
 void irq_handler(registers_t r) {
-    /* After every interrupt we need to send an EOI to the PICs
-     * or they will not send another interrupt again */
+    // Send an EOI to the PICs else they will not send another interrupt again
     if (r.int_no >= 40) port_byte_out(0xA0, 0x20); /* slave */
     port_byte_out(0x20, 0x20); /* master */
 
@@ -137,4 +139,10 @@ void irq_handler(registers_t r) {
         isr_t handler = interrupt_handlers[r.int_no];
         handler(r);
     }
+}
+
+void irq_install() {
+    asm volatile("sti");
+    init_timer(50);
+    init_keyboard();
 }
