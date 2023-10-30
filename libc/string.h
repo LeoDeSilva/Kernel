@@ -5,7 +5,7 @@
 
 char* iota(int n);
 int strlen(char s[]);
-void append(char s[], char ch);
+void concat(char s[], char ch);
 int strcmp(char a[], char b[]);
 
 #endif

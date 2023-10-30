@@ -17,7 +17,7 @@ int strcmp(char a[], char b[]) {
     return a[i] - b[i];
 }
 
-void append(char s[], char ch) {
+void concat(char s[], char ch) {
     int len = strlen(s);
     s[len] = ch;
     s[len+1] = '\0';

@@ -6,12 +6,14 @@
 #include "../libc/string.h"
 #include "../drivers/event.h"
 
-void init_shell() {
-    clear_screen(0x00);
-    kprint(":HONEYCOMB:\n");
-    kprint("A barebones pet project operating system\n\n");
+void main() {
+    isr_install();
+    irq_install();
 
-    static char* input_buf;
+    clear_screen(WHITE_ON_BLACK);
+
+    char input_buf[256];
+
     while (1) {
         kprint(">>");
         readline(input_buf);
@@ -23,32 +25,4 @@ void init_shell() {
             clear_screen(WHITE_ON_BLACK);
         }
     }
-}
-
-void main() {
-    isr_install();
-    irq_install();
-
-    clear_screen(WHITE_ON_BLACK);
-
-    Event event;
-    while (1) {
-        event = pop_event();
-        if (event.type != NIL) {
-            switch (event.data.keydown.scancode) {
-                case BACKSPACE:
-                    kprint_backspace();
-                    break;
-                case ENTER:
-                    kprint("\n");
-                    break;
-                default:
-                    char keycode = event.data.keydown.keycode;
-                    kprint_letter(keycode);
-                    break;
-            }
-        }
-    }
-
-    // init_shell();
 }
