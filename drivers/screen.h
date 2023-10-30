@@ -13,4 +13,5 @@
 void clear_screen(uint8_t colour);
 void kprint(char* msg);
 void kprint_letter(char ch);
+void kprint_backspace();
 void kprint_at(char* msg, int col, int row);

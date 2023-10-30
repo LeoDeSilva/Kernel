@@ -64,6 +64,7 @@
     "ports.h": "c",
     "keyboard.h": "c",
     "stdint.h": "c",
-    "function.h": "c"
+    "function.h": "c",
+    "event.h": "c"
   }
 }

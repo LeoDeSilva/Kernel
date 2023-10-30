@@ -5,7 +5,7 @@ OBJ = $(C_SOURCES:.c=.o cpu/interrupt.o)
 
 # -g: Use debugging symbols in gcc
 CFLAGS = -g -m32 -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs\
-		 -Wall -Wextra -Werror
+		 -Wall -Wextra
 
 all: os-image
 

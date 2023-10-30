@@ -26,6 +26,7 @@ void clear_screen(uint8_t colour) {
     set_cursor_offset(0);
 }
 
+
 void kprint_at(char* msg, int col, int row) {
     if (col >= 0 && row >= 0) {
         set_cursor_offset(get_offset(col, row));
@@ -45,7 +46,16 @@ void kprint(char* msg) {
 }
 
 void kprint_letter(char ch) {
-    kprint(&ch);
+    char str[2] = {ch, '\0'};
+    kprint(str);
+}
+
+void kprint_backspace() {
+    int offset = get_cursor_offset()-2;
+    int row = get_offset_row(offset);
+    int col = get_offset_col(offset);
+    print_char(' ', col, row, WHITE_ON_BLACK);
+    set_cursor_offset(offset);
 }
 
 // Private

@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 char* iota(int n);
-uint32_t strlen(char *s);
+int strlen(char s[]);
+void append(char s[], char ch);
+int strcmp(char a[], char b[]);
 
 #endif

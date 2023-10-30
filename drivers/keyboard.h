@@ -4,5 +4,6 @@
 #include <stdint.h>
 
 void init_keyboard();
+void flush_key_buffer();
 
 #endif
