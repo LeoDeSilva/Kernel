@@ -8,6 +8,7 @@
 #include "event.h"
 
 static char key_buffer[256];
+int shift_held = 0;
 
 #define SC_MAX 57
 const char *sc_name[] = { "ERROR", "Esc", "1", "2", "3", "4", "5", "6", 
@@ -17,11 +18,17 @@ const char *sc_name[] = { "ERROR", "Esc", "1", "2", "3", "4", "5", "6",
         "LShift", "\\", "Z", "X", "C", "V", "B", "N", "M", ",", ".", 
         "/", "RShift", "Keypad *", "LAlt", "Spacebar"};
 
-const char sc_ascii[] = { '?', '?', '1', '2', '3', '4', '5', '6',     
-    '7', '8', '9', '0', '-', '=', '?', '?', 'Q', 'W', 'E', 'R', 'T', 'Y', 
-        'U', 'I', 'O', 'P', '[', ']', '?', '?', 'A', 'S', 'D', 'F', 'G', 
-        'H', 'J', 'K', 'L', ';', '\'', '`', '?', '\\', 'Z', 'X', 'C', 'V', 
-        'B', 'N', 'M', ',', '.', '/', '?', '?', '?', ' '};
+const char sc_ascii[] = { '\0', '\0', '1', '2', '3', '4', '5', '6',     
+    '7', '8', '9', '0', '-', '=', '\0', '\0', 'q', 'w', 'e', 'r', 't', 'y', 
+        'u', 'i', 'o', 'p', '[', ']', '\0', '\0', 'a', 's', 'd', 'f', 'g', 
+        'h', 'j', 'k', 'l', ';', '\'', '`', '\0', '\\', 'z', 'x', 'c', 'v', 
+        'b', 'n', 'm', ',', '.', '/', '\0', '\0', '\0', ' '};
+
+const char sc_shift_ascii[] = { '\0', '\0', '!', '@', '#', '$', '%', '^',     
+    '&', '*', '(', ')', '_', '+', '\0', '\0', 'Q', 'W', 'E', 'R', 'T', 'Y', 
+        'U', 'I', 'O', 'P', '{', '}', '\0', '\0', 'A', 'S', 'D', 'F', 'G', 
+        'H', 'J', 'K', 'L', ':', '"', '~', '\0', '|', 'Z', 'X', 'C', 'V', 
+        'B', 'N', 'M', '<', '>', '?', '\0', '\0', '\0', ' '};
 
 void flush_key_buffer() {
     key_buffer[0] = '\0';
@@ -29,6 +36,8 @@ void flush_key_buffer() {
 
 static void keyboard_callback(registers_t *regs) {
     uint8_t scancode = port_byte_in(0x60);
+
+    if (scancode == 170) shift_held = 0;
     if (scancode > SC_MAX) return; // TODO: handle keyups
     
     Event e;
@@ -36,41 +45,23 @@ static void keyboard_callback(registers_t *regs) {
 
     if (scancode == BACKSPACE || scancode == ENTER) {
         e.data.keydown.scancode = scancode;
-        e.data.keydown.keycode = '?';
+        e.data.keydown.keycode = '\0';
+    } else if (scancode == LSHIFT || scancode == RSHIFT) {
+        shift_held = 1;
+        e.data.keydown.scancode = scancode;
+        e.data.keydown.keycode = '\0';
     } else {
-        char keycode = sc_ascii[(int)scancode];
+        char keycode = shift_held ? sc_shift_ascii[(int)scancode] : sc_ascii[(int)scancode];
         e.data.keydown.scancode = scancode;
         e.data.keydown.keycode = keycode;
     }
 
     push_event(e);
+    kprint_letter((char)0);
 
     UNUSED(regs);
     UNUSED(key_buffer);
 }
-
-// static void buffer_keyboard_callback(registers_t *regs) {
-//     uint8_t scancode = port_byte_in(0x60); // PIC leaves the scancode in port 0x60
-//     if (scancode > SC_MAX) return;
-//
-//     if (scancode == BACKSPACE) {
-//         if (strlen(key_buffer) > 0) {
-//             key_buffer[strlen(key_buffer)-1] = '\0';
-//             kprint_backspace();
-//         }
-//     } else if (scancode == ENTER) {
-//         kprint("\n");
-//         on_submit(key_buffer);
-//     } else {
-//         char letter = sc_ascii[(int)scancode];
-//         if (letter != '?') {
-//             append(key_buffer, letter);
-//             kprint_letter(letter);
-//         }
-//     }
-//
-//     UNUSED(regs);
-// }
 
 void init_keyboard(){
     register_interrupt_handler(IRQ1, keyboard_callback);

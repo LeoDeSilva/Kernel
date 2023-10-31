@@ -28,7 +28,7 @@ void readline(char *buf) {
                     break;
                 default:
                     char key = event.data.keydown.keycode;
-                    if (key != '?') {
+                    if (key != '\0') {
                         concat(key_buffer, key);
                         kprint_letter(key);
                     }

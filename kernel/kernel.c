@@ -14,6 +14,8 @@ void main() {
 
     char input_buf[256];
 
+    kprint(":Honeycomb:\n");
+    kprint("a pet project operating system\n\n");
     while (1) {
         kprint(">>");
         readline(input_buf);
@@ -21,7 +23,7 @@ void main() {
         kprint(input_buf);
         kprint("\n");
 
-        if (strcmp(input_buf, "CLS") == 0) {
+        if (strcmp(input_buf, "cls") == 0) {
             clear_screen(WHITE_ON_BLACK);
         }
     }

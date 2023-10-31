@@ -4,7 +4,9 @@
 #define MAX_EVENTS 256
 #define BACKSPACE 0x0E
 #define ENTER 0x1C
-
+#define LSHIFT 0x2A
+#define RSHIFT 0x36
+#define CAPSLOCK 0x3A
 
 typedef struct {
     enum EventType {
