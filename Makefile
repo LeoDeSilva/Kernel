@@ -14,7 +14,7 @@ os-image: src/boot/bootloader.bin src/kernel/kernel.bin
 	cat $^ > os-image
 	qemu-img resize -f raw os-image +20K
 
-src/kernel/kernel.bin : src/boot/kernel_ep.o ${OBJ}
+src/kernel/kernel.bin : src/boot/kernel_entry.o ${OBJ}
 	i686-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary -e main
 
 %.o : %.c ${HEADERS}
