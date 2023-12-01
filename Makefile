@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard src/kernel/*.c)
-HEADERS = $(wildcard src/kernel/*.h)
+C_SOURCES = $(wildcard src/kernel/*.c src/drivers/*.c src/lib/*.c)
+HEADERS = $(wildcard src/kernel/*.h src/drivers/*.h src/lib/*.h)
 OBJ = $(C_SOURCES:.c=.o)
 
 CFLAGS = -g -m32 -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs\

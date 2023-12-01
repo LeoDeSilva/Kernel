@@ -2,12 +2,12 @@
 A C kernel and bootloader extending on the book "Writing an Operating System from Scratch". An exploration for a project that will ultimately become my NEA (Non Exam Assessment) for Computer Science A Level.
 
 # Reminders
-* [ ] TODO: remove print_hex function from print_string.asm
+* [x] TODO: remove print_hex function from print_string.asm
 * [ ] Implement memset function into mem.h (already defined in ./Honeycomb) & used for initializing 2d array with {{0}}
-* [ ] Rewrite VGA Driver and io.h into functions like VGA_char_set() VGA_fill() and readline() or kprint() etc.  
+* [x] Rewrite VGA Driver and io.h into functions like VGA_char_set() VGA_fill() and readline() or kprint() etc.  
 * [ ] Logically plan file structure from the ground up, combining header files into a single std.h file
-* [ ] Reimpliment cursor logic, scrolling and printing: handling cursor dissapearing when scrolling with ENTER
-* [ ] Logically implement driver & display colours
+* [x] Reimpliment cursor logic, scrolling and printing: handling cursor dissapearing when scrolling with ENTER
+* [x] Logically implement driver & display colours
 * [ ] Implement ELF File format & Write to disk functions
     * [ ] Rewrite CLI commands as 'bin/ls' files
 
